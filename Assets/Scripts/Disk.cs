@@ -14,7 +14,7 @@ public class Disk : MonoBehaviour
     private bool clockwise;
 
     // Obstacle State
-    private Vector3 instantiatePosition;
+    public Vector3 instantiatePosition;
 
     // Cached Component References
     GameObject player;

@@ -15,9 +15,8 @@ public class Player : MonoBehaviour
 
     // Cached Component References
     Rigidbody2D playerRigidBody;
-    Disk disk;
+    public Disk disk;
 
-    // Start is called before the first frame update
     void Start()
     {
         playerRigidBody = GetComponent<Rigidbody2D>();
@@ -72,10 +71,9 @@ public class Player : MonoBehaviour
     {
         if (other.gameObject.tag == "Disk")
         {
-            Debug.Log("Collided");
+            disk = other.gameObject.GetComponent<Disk>();
             jumping = false;
             hasCollided = true;
-            disk = other.gameObject.GetComponent<Disk>();
         }
     }
 }
