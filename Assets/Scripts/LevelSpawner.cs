@@ -7,7 +7,7 @@ public class LevelSpawner : MonoBehaviour
     // Configuration Parameters
     [SerializeField] private int spawnCap;
     [SerializeField] private Vector3 spawnStartPosition;
-    [SerializeField] private float spawnSpreadDistance;
+    [SerializeField] public float spawnSpreadDistance;
     [SerializeField] private float despawnDistance;
 
     // State

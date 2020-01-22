@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class GameSession : MonoBehaviour
 {
+    private int score = 0;
+
     private void Awake()
     {
         SetUpSingleton();
@@ -25,5 +27,29 @@ public class GameSession : MonoBehaviour
     public void ResetGame()
     {
         Destroy(gameObject);
+    }
+
+    public int GetScore()
+    {
+        return score;
+    }
+
+    public void AddToScore(int scoreValue)
+    {
+        score += scoreValue;
+    }
+
+    public int GetHighScore(int scoreValue)
+    {
+        int highScore = PlayerPrefs.GetInt("Highscore", 0);
+        if (highScore < scoreValue)
+        {
+            PlayerPrefs.SetInt("Highscore", scoreValue);
+            return scoreValue;
+        }
+        else
+        {
+            return highScore;
+        }
     }
 }

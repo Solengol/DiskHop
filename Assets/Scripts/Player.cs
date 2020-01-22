@@ -12,14 +12,20 @@ public class Player : MonoBehaviour
     public Vector3 playerLastPosition;
     public bool hasCollided;
     private bool jumping;
+    private float scoreDistance;
 
     // Cached Component References
     Rigidbody2D playerRigidBody;
+    GameSession gameSession;
+    LevelSpawner levelSpawner;
     public Disk disk;
 
     void Start()
     {
         playerRigidBody = GetComponent<Rigidbody2D>();
+        gameSession = FindObjectOfType<GameSession>();
+        levelSpawner = FindObjectOfType<LevelSpawner>();
+        scoreDistance = levelSpawner.spawnSpreadDistance / 2;
         jumping = true;
     }
 
@@ -74,6 +80,12 @@ public class Player : MonoBehaviour
             disk = other.gameObject.GetComponent<Disk>();
             jumping = false;
             hasCollided = true;
+            if (transform.position.y > scoreDistance)
+            {
+                gameSession.AddToScore(1);
+                scoreDistance += levelSpawner.spawnSpreadDistance;
+            }
+
         }
     }
 }
