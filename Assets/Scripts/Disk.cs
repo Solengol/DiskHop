@@ -4,22 +4,20 @@ using UnityEngine;
 
 public class Disk : MonoBehaviour
 {
-    // Configuration Parameters
-
-    // Player State
-    private float playerMovementSpeed;
-    private float playerOscillationRadius;
-    public Vector3 playerLastPosition;
-    private float playerAngle;
-    private bool clockwise;
-
-    // Obstacle State
+    // State Variables
+    private float playerSpeed;
+    private float angle;
+    private float obstacleRadius;
+    private bool isClockwise;
+    private bool isCollided;
+    public Vector3 lastPlayerPosition;
     public Vector3 instantiatePosition;
 
-    // Cached Component References
+    // Cached Object References //
     GameObject player;
     Rigidbody2D playerRigidBody;
-    Player playerController;
+    GameSession gameSession;
+    PlayerController playerController;
 
     void Start()
     {
@@ -27,54 +25,59 @@ public class Disk : MonoBehaviour
         if (player != null)
         {
             playerRigidBody = player.GetComponent<Rigidbody2D>();
-            playerController = player.GetComponent<Player>();
-            playerMovementSpeed = playerController.playerMovementSpeed;
+            playerController = player.GetComponent<PlayerController>();
+            playerSpeed = playerController.playerMovementSpeed;
         }
+        gameSession = FindObjectOfType<GameSession>();
         instantiatePosition = transform.position;
     }
 
-    void FixedUpdate()
+    public void FixedUpdate()
     {
         if (player != null)
         {
-            playerOscillationRadius = transform.localScale.x / 2 + player.transform.localScale.x / 2;
+            obstacleRadius = transform.localScale.x / 2 + player.transform.localScale.x / 2;
         }
     }
 
     public void Oscillate()
     {
         playerRigidBody.isKinematic = true;
-        playerLastPosition = player.transform.position;
-        if (clockwise)
+        lastPlayerPosition = player.transform.position;
+        if (isClockwise)
         {
-            playerAngle += (playerMovementSpeed / (playerOscillationRadius * 2 * Mathf.PI)) * Time.deltaTime;
+            angle += (playerSpeed / (obstacleRadius * 2 * Mathf.PI)) * Time.deltaTime;
         }
         else
         {
-            playerAngle -= (playerMovementSpeed / (playerOscillationRadius * 2 * Mathf.PI)) * Time.deltaTime;
+            angle -= (playerSpeed / (obstacleRadius * 2 * Mathf.PI)) * Time.deltaTime;
         }
-        float x = Mathf.Cos(playerAngle) * playerOscillationRadius;
-        float y = Mathf.Sin(playerAngle) * playerOscillationRadius;
+        float x = Mathf.Cos(angle) * obstacleRadius;
+        float y = Mathf.Sin(angle) * obstacleRadius;
         player.transform.position = new Vector3(x, y, transform.position.z) + transform.position;
     }
 
     private void OnCollisionEnter2D(Collision2D other)
     {
-        if (other.gameObject.name == "Player")
+        if (!isCollided)
         {
+            isCollided = true;
             Vector3 playerDirection = other.transform.position - transform.position;
             Vector3 playerPosition = other.transform.position;
-            playerLastPosition = playerController.playerLastPosition;
-            playerAngle = Mathf.Atan2(playerDirection.y, playerDirection.x) + 2 * Mathf.PI;
-            if ((playerLastPosition.x - transform.position.x) * (player.transform.position.y - transform.position.y)
-                - (playerLastPosition.y - transform.position.y) * (player.transform.position.x - transform.position.x) > 0)
+            lastPlayerPosition = playerController.lastPosition;
+            angle = Mathf.Atan2(playerDirection.y, playerDirection.x) + 2 * Mathf.PI;
+            if ((lastPlayerPosition.x - transform.position.x) * (player.transform.position.y - transform.position.y) -
+                (lastPlayerPosition.y - transform.position.y) * (player.transform.position.x - transform.position.x) > 0)
             {
-                clockwise = true;
+                isClockwise = true;
             }
             else
             {
-                clockwise = false;
+                isClockwise = false;
             }
+            playerController.isCollided = true;
+            gameSession.AddToScore(1);
         }
     }
 }
+

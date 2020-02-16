@@ -8,35 +8,40 @@ public class CameraFollow : MonoBehaviour
     [SerializeField] private float cameraSpeed = 5f;
     [SerializeField] private float offset = 3f;
 
-    // State
+    // State Variables
     private float targetY;
     private Vector3 targetPosition;
     private Vector3 lastPosition;
 
-    // Cached Component References
-    Player playerController;
-    [SerializeField] Disk disk;
+    // Cached Object References
+    PlayerController playerController;
+    Disk disk;
 
     void Start()
     {
-        playerController = GameObject.Find("Player").GetComponent<Player>();
-        lastPosition = transform.position;
+        playerController = GameObject.Find("Player").GetComponent<PlayerController>();
     }
 
     void Update()
     {
-        MoveCamera();
+            MoveCamera();
     }
 
-    void MoveCamera()
+    private void MoveCamera()
     {
         disk = playerController.disk;
-        if (disk != null && playerController != null && playerController.transform.position.y > lastPosition.y)
+        if (disk != null)
         {
             targetY = disk.instantiatePosition.y;
         }
+        else if (disk == null)
+        {
+            targetY = transform.position.y;
+        }
+
         lastPosition = transform.position;
         targetPosition = new Vector3(transform.position.x, targetY + offset, transform.position.z);
         transform.position = Vector3.Lerp(transform.position, targetPosition, cameraSpeed * Time.deltaTime);
+        Debug.Log(targetY);
     }
 }

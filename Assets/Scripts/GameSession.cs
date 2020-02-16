@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GameSession : MonoBehaviour
 {
-    private int score = 0;
+    int score = 0;
 
     private void Awake()
     {
@@ -22,11 +22,6 @@ public class GameSession : MonoBehaviour
         {
             DontDestroyOnLoad(gameObject);
         }
-    }
-
-    public void ResetGame()
-    {
-        Destroy(gameObject);
     }
 
     public int GetScore()
@@ -52,4 +47,11 @@ public class GameSession : MonoBehaviour
             return highScore;
         }
     }
+
+    public void ResetGame()
+    {
+        Destroy(gameObject);
+    }
+
+
 }
