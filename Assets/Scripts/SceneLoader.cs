@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class Level : MonoBehaviour
+public class SceneLoader : MonoBehaviour
 {
     [SerializeField] float delayInSeconds = 2f;
     [SerializeField] GameObject pauseMenu;

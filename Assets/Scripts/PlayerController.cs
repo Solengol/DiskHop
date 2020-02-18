@@ -5,24 +5,33 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-
     // Configuration Parameters
-    public float playerMovementSpeed = 50f;
+    [SerializeField] public float playerMovementSpeed;
 
-    // State Variables
-    public bool isCollided = false;
-    public bool isJumping = false;
-    public Vector3 lastPosition;
+    // State
+    public Vector3 playerLastPosition;
+    public bool hasCollided;
+    private bool jumping;
+    private float scoreDistance;
+    private string diskName;
 
-    // Cached Object References
-    Rigidbody2D playerRigidbody;
-    public Disk disk = null;
+    // Cached Component References
+    Rigidbody2D playerRigidBody;
+    GameSession gameSession;
+    DiskSpawner diskSpawner;
+    public Disk disk;
 
     void Start()
     {
-        playerRigidbody = GetComponent<Rigidbody2D>();
+        playerRigidBody = GetComponent<Rigidbody2D>();
+        gameSession = FindObjectOfType<GameSession>();
+        diskSpawner = FindObjectOfType<DiskSpawner>();
+        scoreDistance = diskSpawner.spawnSpreadDistance / 2;
+        diskName = "Disk_1_1";
+        jumping = true;
     }
 
+    // Update is called once per frame
     void Update()
     {
         HandleInput();
@@ -31,21 +40,22 @@ public class PlayerController : MonoBehaviour
 
     private void HandleInput()
     {
-        if (Input.GetMouseButtonDown(0) && EventSystem.current.currentSelectedGameObject == null)
+        if (Input.GetMouseButtonDown(0))
         {
-            isCollided = false;
+            jumping = true;
+            hasCollided = false;
         }
     }
 
     private void HandleMovement()
     {
-        if (isCollided && disk != null)
-        {
-            disk.Oscillate();
-        }
-        else
+        if (jumping)
         {
             Jump();
+        }
+        else if (!jumping && hasCollided)
+        {
+            disk.Oscillate();
         }
     }
 
@@ -57,17 +67,30 @@ public class PlayerController : MonoBehaviour
         }
         else if (disk != null)
         {
-            isJumping = true;
-            lastPosition = transform.position;
-            Vector3 direction = transform.position - disk.lastPlayerPosition;
+            playerLastPosition = transform.position;
+            Vector3 direction = transform.position - disk.playerLastPosition;
             direction.Normalize();
-            playerRigidbody.isKinematic = false;
+            playerRigidBody.isKinematic = false;
             transform.position += direction * (playerMovementSpeed / (2 * Mathf.PI)) * Time.deltaTime;
         }
     }
 
     private void OnCollisionEnter2D(Collision2D other)
     {
-        disk = other.gameObject.GetComponent<Disk>();
+        if (other.gameObject.tag == "Disk")
+        {
+            disk = other.gameObject.GetComponent<Disk>();
+            if (diskName != other.gameObject.name)
+            {
+                diskName = other.gameObject.name;
+                hasCollided = true;
+                jumping = false;
+                if (transform.position.y > scoreDistance)
+                {
+                    gameSession.AddToScore(1);
+                    scoreDistance += diskSpawner.spawnSpreadDistance;
+                }
+            }
+        }
     }
 }

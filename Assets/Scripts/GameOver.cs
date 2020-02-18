@@ -15,6 +15,6 @@ public class GameOver : MonoBehaviour
         GameObject explosion = Instantiate(deathVFX, player.transform.position, player.transform.rotation);
         Destroy(explosion, durationOfExplosion);
         Destroy(player);
-        FindObjectOfType<Level>().LoadGameOver();
+        FindObjectOfType<SceneLoader>().LoadGameOver();
     }
 }
