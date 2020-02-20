@@ -43,7 +43,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61f4f3892fa8f134dbd46258e7aa0567, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  firstObstacle: {fileID: 7329434206714287778, guid: e067a49e7c88e4b43a97fdd587ac9938,
+  firstObstacle: {fileID: 5167388312020509036, guid: cad4aed071e75254fa3c7004830d488d,
     type: 3}
   spawnCap: 5
   spawnSpreadDistance: 5
