@@ -48,6 +48,7 @@ SpriteRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -59,6 +60,7 @@ SpriteRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -71,8 +73,8 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: d40c6088733ab104384a519bc0851bac, type: 3}
-  m_Color: {r: 0.4745098, g: 0.4745098, b: 0.4745098, a: 1}
+  m_Sprite: {fileID: 21300000, guid: d4fd42d511885b44196c11eb0c30ceef, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -95,9 +97,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerMovementSpeed: 50
-  isCollided: 0
-  isJumping: 0
-  lastPosition: {x: 0, y: 0, z: 0}
+  playerLastPosition: {x: 0, y: 0, z: 0}
+  hasCollided: 0
   disk: {fileID: 0}
 --- !u!50 &3532571159195790829
 Rigidbody2D:
