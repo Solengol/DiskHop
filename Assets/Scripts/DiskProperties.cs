@@ -6,13 +6,14 @@ public class DiskProperties : MonoBehaviour
 {
 	// Configuration Parameters
 	[Header("Horizontal Movement")]
-	[SerializeField] private bool isMovingHorizontally;
-	[SerializeField] private float horizontalMovementSpeed;
-	[SerializeField] private float horizontalMovementDistance;
+	[SerializeField] private bool isMovingHorizontally = default;
+	[SerializeField] private float horizontalMovementSpeed = default;
+	[SerializeField] private float horizontalMovementDistance = default;
+	[SerializeField] private bool startLeft = default;
 	[Header("Scale Up & Down")]
-	[SerializeField] private bool isScaling;
-	[SerializeField] private float scaleFactor = 0.3f;
-	[SerializeField] private float scaleSpeed = 1f;
+	[SerializeField] private bool isScaling = default;
+	[SerializeField] private float scaleFactor = default;
+	[SerializeField] private float scaleSpeed = default;
 
 	// State Variables
 	private Vector2 startPosition;
@@ -28,7 +29,7 @@ public class DiskProperties : MonoBehaviour
 		newScale = transform.localScale.x;
 	}
 
-	void Update()
+	void FixedUpdate()
 	{
 		if (isMovingHorizontally)
 		{
@@ -42,7 +43,14 @@ public class DiskProperties : MonoBehaviour
 
 	void MoveHorizontally()
 	{
-		newPosition.x = startPosition.x + (horizontalMovementDistance * Mathf.Sin(Time.time * horizontalMovementSpeed));
+		if (startLeft)
+		{
+			newPosition.x = startPosition.x - (horizontalMovementDistance * Mathf.Sin(Time.time * horizontalMovementSpeed));
+		}
+		else
+		{
+			newPosition.x = startPosition.x + (horizontalMovementDistance * Mathf.Sin(Time.time * horizontalMovementSpeed));
+		}
 		transform.position = newPosition;
 	}
 

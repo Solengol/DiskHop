@@ -48,6 +48,7 @@ SpriteRenderer:
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -59,6 +60,7 @@ SpriteRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -72,7 +74,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: d40c6088733ab104384a519bc0851bac, type: 3}
-  m_Color: {r: 0.24705882, g: 0.2509804, b: 0.25490198, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -96,6 +98,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerLastPosition: {x: 0, y: 0, z: 0}
   instantiatePosition: {x: 0, y: 0, z: 0}
+  hasCollided: 0
 --- !u!58 &7170053079312264202
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -119,7 +122,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7170053079312264203}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d8bcb8b8c3b4fa140b0d2cd2adb24bb3, type: 3}
   m_Name: 
@@ -127,6 +130,7 @@ MonoBehaviour:
   isMovingHorizontally: 0
   horizontalMovementSpeed: 0
   horizontalMovementDistance: 0
+  startLeft: 0
   isScaling: 0
   scaleFactor: 0
   scaleSpeed: 0
