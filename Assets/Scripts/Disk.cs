@@ -15,6 +15,10 @@ public class Disk : MonoBehaviour
 
     // Obstacle State
     public Vector3 instantiatePosition;
+    private Color dormantColor = new Color(214f / 255f, 220f / 255f, 229f / 255f);
+    private Color activatedColor = new Color(75f / 255f, 161f / 255f, 59f / 255f);
+    public bool hasCollided;
+    public bool inCollision;
 
     // Cached Component References
     GameObject player;
@@ -23,6 +27,8 @@ public class Disk : MonoBehaviour
 
     void Start()
     {
+        gameObject.GetComponent<Renderer>().material.color = dormantColor;
+        hasCollided = false;
         player = GameObject.Find("Player");
         if (player != null)
         {
@@ -43,7 +49,6 @@ public class Disk : MonoBehaviour
 
     public void Oscillate()
     {
-        playerRigidBody.isKinematic = true;
         playerLastPosition = player.transform.position;
         if (clockwise)
         {
@@ -55,13 +60,15 @@ public class Disk : MonoBehaviour
         }
         float x = Mathf.Cos(playerAngle) * playerOscillationRadius;
         float y = Mathf.Sin(playerAngle) * playerOscillationRadius;
+        Vector3 playerMovement = new Vector3(x, y, transform.position.z) + transform.position;
         player.transform.position = new Vector3(x, y, transform.position.z) + transform.position;
     }
 
     private void OnCollisionEnter2D(Collision2D other)
     {
-        if (other.gameObject.name == "Player")
+        if (other.gameObject.name == "Player" && !inCollision)
         {
+            inCollision = true;
             Vector3 playerDirection = other.transform.position - transform.position;
             Vector3 playerPosition = other.transform.position;
             playerLastPosition = playerController.playerLastPosition;
@@ -75,6 +82,8 @@ public class Disk : MonoBehaviour
             {
                 clockwise = false;
             }
+            gameObject.GetComponent<Renderer>().material.color = activatedColor;
         }
     }
+
 }
